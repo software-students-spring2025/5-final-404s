@@ -7,6 +7,7 @@ click==8.1.8; python_version >= '3.7'
 dnspython==2.6.1; python_version >= '3.8'
 flask==3.0.3; python_version >= '3.8'
 flask-bcrypt==1.0.1
+flask-login==0.6.3; python_version >= '3.7'
 idna==3.10; python_version >= '3.6'
 importlib-metadata==8.5.0; python_version >= '3.8'
 itsdangerous==2.2.0; python_version >= '3.8'

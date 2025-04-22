@@ -4,6 +4,7 @@ from flask import Flask, render_template, request, redirect, url_for
 from flask_login import LoginManager, UserMixin, current_user, login_user, login_required, logout_user
 import pymongo
 from bson.objectid import ObjectId
+from werkzeug.security import generate_password_hash
 
 # get env variables from .env
 load_dotenv()
@@ -14,7 +15,7 @@ def create_app():
    returns: app: the Flask application object
    """
    app = Flask(__name__)
-
+ 
    # set secret and auto reload templates
    app.secret_key = os.urandom(24)
    app.config["TEMPLATES_AUTO_RELOAD"] = True
@@ -80,45 +81,35 @@ def create_app():
       # show login page for GET requests
       return render_template("index.html")
    
-   @app.route("/register", methods=["GET","POST"])
+   @app.route("/register", methods=["GET", "POST"])
    def register():
-      """
-      Route for user registration
-      """
-      # if user logged in, redirect to home page
       if current_user.is_authenticated:
          return redirect(url_for("home"))
 
-      # handle POST request
       if request.method == "POST":
-         username = request.form.get("username").strip()
-         password = request.form.get("password").strip()
-         confirm_password = request.form.get("confirm_password").strip()
+         username = request.form.get("username", "").strip()
+         password = request.form.get("password", "").strip()
+         confirm_password = request.form.get("confirm_password", "").strip()
 
-         if username and password and confirm_password:
-            if password == confirm_password:
-               existing_user = db.users.find_one({"username": username})
+         if not (username and password and confirm_password):
+               return render_template("register.html", error="All fields are required.")
 
-               # handle if user already exists with username
-               if existing_user:
-                  return render_template("register.html", error="Username already exists.")
-               
-               # add new user
-               user_doc = {"username": username, "password": password}
-               added_user = db.users.insert_one(user_doc)
-
-               # log new user
-               user = User()
-               user.id = str(added_user.inserted_id)
-               login_user(user)
-               return redirect(url_for("home"))
-            else:
-               # handle passwords not matching
+         if password != confirm_password:
                return render_template("register.html", error="Passwords do not match.")
-         else:
-            return render_template("register.html", error="All form fields are required.")
-      
-      # show register page for GET requests
+
+         if db.users.find_one({"username": username}):
+               return render_template("register.html", error="Username already exists.")
+
+         hashed_pw = generate_password_hash(password)
+         result = db.users.insert_one({"username": username, "password": hashed_pw})
+         user_doc = db.users.find_one({"_id": result.inserted_id})
+
+         # Log user in
+         user = User(user_doc)
+         login_user(user)
+
+         return redirect(url_for("home"))
+
       return render_template("register.html")
             
    @app.route("/logout")
