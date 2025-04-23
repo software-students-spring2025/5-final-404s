@@ -5,6 +5,7 @@ from flask_login import LoginManager, UserMixin, current_user, login_user, login
 import pymongo
 from bson.objectid import ObjectId
 from werkzeug.security import generate_password_hash
+from datetime import datetime
 
 # get env variables from .env
 load_dotenv()
@@ -105,7 +106,8 @@ def create_app():
          user_doc = db.users.find_one({"_id": result.inserted_id})
 
          # Log user in
-         user = User(user_doc)
+         user = User()
+         user.id = str(result.inserted_id)
          login_user(user)
 
          return redirect(url_for("home"))
@@ -127,7 +129,12 @@ def create_app():
       """
       Route for app home page
       """
-      pass
+      # get user's most recent foods
+      recent_meals = list(db.meals.find({
+         "user_id": ObjectId(current_user.id)
+      }).sort("created_at", -1))
+
+      return render_template("home.html", meals = recent_meals)
 
    @app.route("/meal-history")
    @login_required
@@ -137,21 +144,67 @@ def create_app():
       """
       pass
 
-   @app.route("/add-meal")
+   @app.route("/add-meal", methods=["GET", "POST"])
    @login_required
    def add_meal():
       """
       Route for adding new meal to user's history
       """
-      pass
+      if request.method == "POST":
+         # get meal data from form
+         food_input = request.form.get("food_list").strip()
+         meal_type = request.form.get("meal_type")
+         date = request.form.get("date", datetime.now().strftime("%Y-%m-%d"))
 
-   @app.route("/meal-summary")
+         # split food input into list
+         food_list = [food.strip() for food in food_input.split() if food.strip()]
+
+         # get nutrition facts via API
+         nutrition_facts = {
+            "calories": 0,
+            "protein": 0,
+            "carbohydrates": 0,
+            "fats": 0,
+            "fiber": 0
+         }
+         
+         # insert meal to db 
+         meal = {
+            "user_id": ObjectId(current_user.id),
+            "food_input": food_input,
+            "foods": food_list,
+            "meal_type": meal_type,
+            "date": date,
+            "nutrition": nutrition_facts,
+            "added_at": datetime.now(datetime.timezone.utc)
+         }
+         meal_doc = db.meals.insert_one(meal).inserted_id
+         return redirect(url_for("meal_summary", meal_id=str(meal_doc)))
+
+      # handle GET requests
+      return render_template("add_meal.html", date=datetime.now().strftime("%Y-%m-%d"))
+        
+   @app.route("/meal-summary/<meal_id>")
    @login_required
-   def meal_summary():
+   def meal_summary(meal_id):
       """
       Route for viewing nutrition facts for a meal
       """
-      pass
+      # find meal from database
+      try:
+         meal = db.meals.find_one({
+            "_id": ObjectId(meal_id),
+            "user_id": ObjectId(current_user.id)
+         })
+      except:
+         # return to home if error occurs
+         return redirect(url_for("home"))
+
+      # return to home if meal not found
+      if not meal:
+         return redirect(url_for("home"))
+
+      return render_template("meal_summary.html", meal=meal)
 
    @app.route("/meal-recommendations")
    @login_required
