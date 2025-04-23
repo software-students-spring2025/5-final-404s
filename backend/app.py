@@ -100,32 +100,32 @@ def create_app():
 
         # Validation
         if not (username and password and confirm_password):
-            print("❌ Missing fields")
+            print("Missing fields")
             return render_template("register.html", error="All fields are required.")
 
         if password != confirm_password:
-            print("❌ Passwords do not match")
+            print("Passwords do not match")
             return render_template("register.html", error="Passwords do not match.")
 
         if db.users.find_one({"username": username}):
-            print("❌ Username already exists")
+            print("Username already exists")
             return render_template("register.html", error="Username already exists.")
 
         # Insert into MongoDB
         hashed_pw = generate_password_hash(password)
         result = db.users.insert_one({"username": username, "password": hashed_pw})
-        print(f"✅ User inserted with ID: {result.inserted_id}")
+        print(f"User inserted with ID: {result.inserted_id}")
 
         user_doc = db.users.find_one({"_id": result.inserted_id})
-        print(f"✅ Retrieved user document: {user_doc is not None}")
+        print(f"Retrieved user document: {user_doc is not None}")
 
         # Create User object
         user = User(user_doc)
-        print("✅ Created User object")
+        print("Created User object")
 
         # Log user in
         login_user(user)
-        print("✅ User logged in — redirecting to /home")
+        print("User logged in — redirecting to /home")
 
         return redirect(url_for("home"))
 
