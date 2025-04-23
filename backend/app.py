@@ -38,7 +38,10 @@ def create_app():
    
    # class for user login
    class User(UserMixin):
-      pass
+    def __init__(self, user_doc=None):
+        if user_doc:
+            self.id = str(user_doc["_id"])
+            self.username = user_doc["username"]
 
    @login_manager.user_loader
    def user_loader(id):
@@ -84,35 +87,49 @@ def create_app():
    
    @app.route("/register", methods=["GET", "POST"])
    def register():
-      if current_user.is_authenticated:
-         return redirect(url_for("home"))
+    if current_user.is_authenticated:
+        print("✅ User is already authenticated, redirecting to /home")
+        return redirect(url_for("home"))
 
-      if request.method == "POST":
-         username = request.form.get("username", "").strip()
-         password = request.form.get("password", "").strip()
-         confirm_password = request.form.get("confirm_password", "").strip()
+    if request.method == "POST":
+        username = request.form.get("username", "").strip()
+        password = request.form.get("password", "").strip()
+        confirm_password = request.form.get("confirm_password", "").strip()
 
-         if not (username and password and confirm_password):
-               return render_template("register.html", error="All fields are required.")
+        print(f"🔹 Form submitted — username: {username}")
 
-         if password != confirm_password:
-               return render_template("register.html", error="Passwords do not match.")
+        # Validation
+        if not (username and password and confirm_password):
+            print("❌ Missing fields")
+            return render_template("register.html", error="All fields are required.")
 
-         if db.users.find_one({"username": username}):
-               return render_template("register.html", error="Username already exists.")
+        if password != confirm_password:
+            print("❌ Passwords do not match")
+            return render_template("register.html", error="Passwords do not match.")
 
-         hashed_pw = generate_password_hash(password)
-         result = db.users.insert_one({"username": username, "password": hashed_pw})
-         user_doc = db.users.find_one({"_id": result.inserted_id})
+        if db.users.find_one({"username": username}):
+            print("❌ Username already exists")
+            return render_template("register.html", error="Username already exists.")
 
-         # Log user in
-         user = User()
-         user.id = str(result.inserted_id)
-         login_user(user)
+        # Insert into MongoDB
+        hashed_pw = generate_password_hash(password)
+        result = db.users.insert_one({"username": username, "password": hashed_pw})
+        print(f"✅ User inserted with ID: {result.inserted_id}")
 
-         return redirect(url_for("home"))
+        user_doc = db.users.find_one({"_id": result.inserted_id})
+        print(f"✅ Retrieved user document: {user_doc is not None}")
 
-      return render_template("register.html")
+        # Create User object
+        user = User(user_doc)
+        print("✅ Created User object")
+
+        # Log user in
+        login_user(user)
+        print("✅ User logged in — redirecting to /home")
+
+        return redirect(url_for("home"))
+
+    return render_template("register.html")
             
    @app.route("/logout")
    @login_required
