@@ -11,13 +11,14 @@ functions below
 
 
 
-variable = input()
+#variable = input()
 
 
 
 def main():
     '''main function'''
 
+    variable = input()
 
     #food groups for defecits
     #categories = {'carbs', 'protein', 'fruit', 'vegetables'}
