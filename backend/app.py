@@ -5,6 +5,7 @@ from flask_login import LoginManager, UserMixin, current_user, login_user, login
 import pymongo
 from bson.objectid import ObjectId
 from werkzeug.security import generate_password_hash
+from werkzeug.security import check_password_hash
 from datetime import datetime
 
 # get env variables from .env
@@ -70,7 +71,7 @@ def create_app():
             document = db.users.find_one({"username": username})
             if document:
                # compare passwords
-               if document["password"] == password:
+               if check_password_hash(document["password"], password):
                   user = User()
                   user.id = str(document["_id"])
                   login_user(user)
