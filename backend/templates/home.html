@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>NutriTrack - Home</title>
+</head>
+<body>
+    <h1>Welcome, {{ current_user.username }}!</h1>
+
+    <h2>Your Recent Meals</h2>
+
+    {% if meals %}
+        <ul>
+            {% for meal in meals %}
+                <li>
+                    <strong>{{ meal.meal_type|capitalize }}</strong> on {{ meal.date }}<br>
+                    Foods: {{ meal.food_input }}<br>
+                    <a href="{{ url_for('meal_summary', meal_id=meal._id) }}">View Nutrition Summary</a>
+                </li>
+                <br>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No meals logged yet.</p>
+    {% endif %}
+
+    <hr>
+
+    <a href="{{ url_for('add_meal') }}">➕ Add New Meal</a><br><br>
+    <a href="{{ url_for('meal_history') }}">📜 View Full Meal History</a><br><br>
+    <a href="{{ url_for('meal_recommendations') }}">💡 Get Meal Recommendations</a><br><br>
+
+    <a href="{{ url_for('logout') }}">🚪 Log Out</a>
+</body>
+</html>
