@@ -1,11 +1,6 @@
-# BADGE HERE
-
-
-
+[![Python Tests](https://github.com/software-students-spring2025/5-final-404s/actions/workflows/ci.yml/badge.svg)](https://github.com/software-students-spring2025/5-final-404s/actions/workflows/ci.yml)
 
 # Team 404s
-
-
 
 
 ## Description
@@ -16,10 +11,7 @@ For example if they have had no carbs yet maybe we recommend food options with c
 
 
 
-
-
 ## links to the container images for each custom subsystem, hosted on DockerHub.
-
 
 
 
@@ -29,34 +21,22 @@ For example if they have had no carbs yet maybe we recommend food options with c
 
 
 
-
-
 ## if there are any "secret" configuration files, such as .env or similar files, that are not included in the version control repository, examples of these files, such as env.example, with dummy data must be included in the repository and exact instructions for how to create the proper configuration files and what their contents should be must be supplied to the course admins by the due date.
-
-
 
 
 
 
 ## Contributors:
 [Maya Felix](https://github.com/mxf4596)
+
+
 [First Last](https://github.com/)
+
+
 [First Last](https://github.com/)
+
+
 [First Last](https://github.com/)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
