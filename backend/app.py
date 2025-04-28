@@ -7,6 +7,69 @@ from bson.objectid import ObjectId
 from werkzeug.security import generate_password_hash
 from werkzeug.security import check_password_hash
 from datetime import datetime, timezone
+import requests
+
+# function to get nutrition facts from api 
+def get_nutrition_facts(food_name):
+   """
+   Given a food name use USDA api to get nutrition facts
+   """
+   key = os.getenv("FOOD_API_KEY")
+
+   # send req and get data
+   search_url = f"https://api.nal.usda.gov/fdc/v1/foods/search?api_key={key}&query={food_name}"
+   search_response = requests.get(search_url)
+
+   # handle errors
+   if search_response.status_code != 200:
+      return {
+         "calories": 0,
+         "protein": 0,
+         "carbohydrates": 0,
+         "fiber": 0,
+         "calcium": 0
+      } 
+   search_data = search_response.json()
+
+   # return default values when search not found
+   if not search_data["foods"]:
+      return {
+         "calories": 0,
+         "protein": 0,
+         "carbohydrates": 0,
+         "fiber": 0,
+         "calcium": 0
+      } 
+   
+   # get first food results
+   fdc_id = search_data["foods"][0]["fdcId"]
+
+   # use food id to make request
+   food_url = f"https://api.nal.usda.gov/fdc/v1/food/{fdc_id}?api_key={key}"
+   food_response = requests.get(food_url)
+
+   # handle errors
+   if food_response.status_code != 200:
+      return {
+         "calories": 0,
+         "protein": 0,
+         "carbohydrates": 0,
+         "fiber": 0,
+         "calcium": 0,
+         
+      } 
+   food_data = food_response.json()
+
+   # get nutrients for food and return values
+   nutrients = food_data.get("labelNutrients", {})
+
+   return {
+      "calories": nutrients.get("calories", {}).get("value", 0),
+      "protein": nutrients.get("protein", {}).get("value", 0),
+      "carbohydrates": nutrients.get("carbohydrates", {}).get("value", 0),
+      "fiber": nutrients.get("fiber", {}).get("value", 0),
+      "calcium": nutrients.get("calcium", {}).get("value", 0),
+   }
 
 # get env variables from .env
 load_dotenv()
@@ -150,7 +213,7 @@ def create_app():
       # get user's most recent foods
       recent_meals = list(db.meals.find({
          "user_id": ObjectId(current_user.id)
-      }).sort("created_at", -1))
+      }).sort("added_at", -1))
 
       return render_template("home.html", meals = recent_meals)
 
@@ -177,14 +240,23 @@ def create_app():
          # split food input into list
          food_list = [food.strip() for food in food_input.split() if food.strip()]
 
-         # get nutrition facts via API
-         nutrition_facts = {
+         # initialze nutrition count for meal
+         total_nutrition_facts = {
             "calories": 0,
             "protein": 0,
             "carbohydrates": 0,
-            "fats": 0,
-            "fiber": 0
+            "fiber": 0,
+            "calcium": 0
          }
+
+         # get nutrition facts for each food item
+         for food in food_list:
+            nutrition_facts = get_nutrition_facts(food)
+            total_nutrition_facts["calories"] += nutrition_facts["calories"]
+            total_nutrition_facts["protein"] += nutrition_facts["protein"]
+            total_nutrition_facts["carbohydrates"] += nutrition_facts["carbohydrates"]
+            total_nutrition_facts["fiber"] += nutrition_facts["fiber"]
+            total_nutrition_facts["calcium"] += nutrition_facts["calcium"]
          
          # insert meal to db 
          meal = {
@@ -193,7 +265,7 @@ def create_app():
             "foods": food_list,
             "meal_type": meal_type,
             "date": date,
-            "nutrition": nutrition_facts,
+            "nutrition": total_nutrition_facts,
             "added_at": datetime.now(timezone.utc)
          }
          meal_doc = db.meals.insert_one(meal).inserted_id
