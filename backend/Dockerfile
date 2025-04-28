@@ -1,31 +1,24 @@
-# Use a lightweight, secure base image
-FROM python:3.13-slim
+# Use a Python base image
+FROM python:3.10-slim
 
-# Set environment variables
-ENV PYTHONDONTWRITEBYTECODE=1
-ENV PYTHONUNBUFFERED=1
-
-# Set working directory in container
+# Set working directory
 WORKDIR /app
 
-# Install OS-level dependencies
-RUN apt-get update && apt-get install -y --no-install-recommends \
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
     build-essential \
     gcc \
     libffi-dev \
     libpq-dev \
     && rm -rf /var/lib/apt/lists/*
 
-# Install Python dependencies
+# Copy requirements and install
 COPY requirements.txt .
-RUN pip install --upgrade pip
+RUN pip install --upgrade pip setuptools wheel
 RUN pip install -r requirements.txt
 
-# Copy application code
+# Copy the rest of your app
 COPY . .
 
-# Expose the port Flask runs on
-EXPOSE 5000
-
-# Set default command to run the Flask app
-CMD ["python", "app.py"]
+# Run the app
+CMD ["flask", "run", "--host=0.0.0.0"]
