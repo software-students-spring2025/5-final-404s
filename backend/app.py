@@ -6,7 +6,7 @@ import pymongo
 from bson.objectid import ObjectId
 from werkzeug.security import generate_password_hash
 from werkzeug.security import check_password_hash
-from datetime import datetime
+from datetime import datetime, timezone
 
 # get env variables from .env
 load_dotenv()
@@ -194,7 +194,7 @@ def create_app():
             "meal_type": meal_type,
             "date": date,
             "nutrition": nutrition_facts,
-            "added_at": datetime.now(datetime.timezone.utc)
+            "added_at": datetime.now(timezone.utc)
          }
          meal_doc = db.meals.insert_one(meal).inserted_id
          return redirect(url_for("meal_summary", meal_id=str(meal_doc)))
@@ -230,7 +230,7 @@ def create_app():
       """
       Route for viewing recommended meals
       """
-      pass
+      return render_template("meal_recommendations.html")
 
 
 
