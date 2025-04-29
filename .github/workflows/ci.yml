@@ -50,5 +50,69 @@ jobs:
     - name: Run tests
       run: |
         pytest recommend_test.py
+  build:
+    runs-on: ubuntu-latest
+    needs: test  # Ensure the test job runs first
 
+    steps:
+      # Step 1: Checkout the code
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Step 2: Set up Docker Buildx (for multi-platform builds if needed)
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      # Step 3: Cache Docker layers to speed up builds
+      - name: Cache Docker layers
+        uses: actions/cache@v2
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-docker-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-docker-
+
+      # Step 4: Build Docker images for backend and mongo
+      - name: Build Docker images
+        run: |
+          docker-compose -f docker-compose.yml build
+
+      # Step 5: Test the Docker image (optional, but recommended)
+      - name: Test Docker image
+        run: |
+          docker-compose -f docker-compose.yml run --rm backend python -m unittest discover
+
+      # Step 6: Log in to Docker Hub
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      # Step 7: Push the Docker images to Docker Hub
+      - name: Push Docker images to Docker Hub
+        run: |
+          docker-compose -f docker-compose.yml push
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build  # Ensure the build job runs first
+
+    steps:
+      # Step 8: Checkout code again (required for SSH deployment)
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Step 9: Deploy to DigitalOcean using SSH
+      - name: Deploy to DigitalOcean
+        uses: appleboy/ssh-action@v0.1.0
+        with:
+          host: ${{ secrets.DIGITALOCEAN_HOST }}
+          username: ${{ secrets.DIGITALOCEAN_USER }}
+          key: ${{ secrets.DIGITALOCEAN_SSH_KEY }}
+          script: |
+            # Pull the latest image from Docker Hub
+            docker-compose -f docker-compose.yml pull
+            # Run the Docker containers
+            docker-compose -f docker-compose.yml up -d
 
