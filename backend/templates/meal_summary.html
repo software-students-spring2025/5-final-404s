@@ -1,3 +1,6 @@
+{% extends "base.html" %}
+
+{% block content %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -34,8 +37,10 @@
                 {% for recommendation in recommendations %}
                     <li>{{ recommendation }}</li>
                 {% endfor %}
+
             </ul>
         </div>
     </div>
+    {% endblock %}
 </body>
 </html>
