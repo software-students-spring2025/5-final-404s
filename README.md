@@ -30,7 +30,7 @@ For example if they have had no carbs yet maybe we recommend food options with c
 [Maya Felix](https://github.com/mxf4596)
 
 
-[First Last](https://github.com/)
+[Arkadiuz Mercado](https://github.com/ArionM27)
 
 
 [First Last](https://github.com/)
