@@ -1,13 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>NutriTrack - Home</title>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Home - NutriTrack</title>
+        <link rel="stylesheet" type="text/css" href="../static/style.css">
+     </head>
 </head>
 <body>
-    <h1>Welcome, {{ current_user.username }}!</h1>
-
-    <h2>Your Recent Meals</h2>
+    <h1>NutriTrack</h1>
+    <h3>Welcome, {{ current_user.username }}!</h1>
+    <h3>Your Recent Meals</h2>
 
     {% if meals %}
         <ul>
@@ -24,11 +28,13 @@
         <p>No meals logged yet.</p>
     {% endif %}
 
+    <br>
     <hr>
 
-    <a href="{{ url_for('add_meal') }}">➕ Add New Meal</a><br><br>
-    <a href="{{ url_for('meal_history') }}">📜 View Full Meal History</a><br><br>
-
-    <a href="{{ url_for('logout') }}">🚪 Log Out</a>
+    <div class="center-container">
+        <a href="{{ url_for('add_meal') }}">➕ Add New Meal</a>
+        <a href="{{ url_for('meal_history') }}">📜 View Full Meal History</a>
+        <a href="{{ url_for('logout') }}">🚪 Log Out</a>
+     </div>
 </body>
 </html>

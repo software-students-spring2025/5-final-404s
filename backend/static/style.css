@@ -57,7 +57,7 @@
   textarea:focus,
   select:focus {
     outline: none;
-    border-color: var(--silver);
+    border-color: silver;
   }
   
   .button-container {
@@ -98,8 +98,8 @@
   
   .center-container a {
     display: inline-block;
-    background-color: lightgray;
-    color: var(--white);
+    background-color: white;
+    color: black;
     padding: 8px 16px;
     margin: 10px;
     text-decoration: none;
@@ -109,29 +109,6 @@
   
   .center-container a:hover {
     background-color: gray;
-  }
-  
-  .empty-category {
-    font-style: italic;
-    color: #888;
-    margin-left: 1rem;
-  }
-  
-  .category-section {
-    margin-bottom: 2rem;
-  }
-  
-  .foods-div {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-  }
-  
-  .food-item {
-    background-color: #f8f8f8;
-    border: 1px solid #ccc;
-    padding: 1rem;
-    border-radius: 8px;
   }
   
   .add-button {
