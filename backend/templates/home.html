@@ -17,18 +17,15 @@
      </div>
 
     <h3>Welcome, {{ current_user.username }}!</h1>
-
-    <br>
-
-    <h3>Your Recent Meals</h2>
+    <h3 class="light">Your Recent Meals</h3>
 
     {% if meals %}
         <ul>
-            {% for meal in meals %}
+            {% for meal in meals[:3]%}
                 <li>
                     <strong>{{ meal.meal_type|capitalize }}</strong> on {{ meal.date }}<br>
                     Foods: {{ meal.food_input }}<br>
-                    <a href="{{ url_for('meal_summary', meal_id=meal._id) }}">View Nutrition Summary</a>
+                    <a href="{{ url_for('meal_summary', meal_id=meal._id) }}" class="light">View Nutrition Summary</a>
                 </li>
                 <br>
             {% endfor %}

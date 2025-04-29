@@ -80,7 +80,7 @@
   }
   
   a {
-    color: gray;
+    color: black;
     text-decoration: none;
     font-weight: bold;
     transition: color 0.3s ease;
@@ -93,7 +93,7 @@
   
   .center-container {
     text-align: center;
-    margin: 50px auto;
+    margin: 25px auto;
   }
   
   .center-container a {
@@ -170,4 +170,8 @@
     display: flex;
     justify-content: center;
     margin-top: 25px;
+  }
+
+  .light{
+    color: grey;
   }
