@@ -18,6 +18,11 @@ For example if they have had no carbs yet maybe we recommend food options with c
 
 ## instructions for how to set up any environment variables and import any starter data into the database, as necessary, for the system to operate correctly when run.
 
+You will need an API key from https://fdc.nal.usda.gov/api-guide 
+
+Click on "Sign up to obtain a key" 
+
+Navigate here for instructions on how to set up the key: https://api.data.gov/docs/developer-manual/
 
 
 
