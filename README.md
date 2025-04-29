@@ -10,7 +10,17 @@ A web application that helps users track their daily food intake and receive rec
 Users can enter what they have eaten and we can calculate food nutrition facts and see what nutrient they lack and recommend meals based on that. 
 For example if they have had no carbs yet maybe we recommend food options with carbs such as pasta, rice, bread etc.
 
+## Contributors:
+[Maya Felix](https://github.com/mxf4596)
 
+
+[Arkadiuz Mercado](https://github.com/ArionM27)
+
+
+[Angel Serrano](https://github.com/a-ngels)
+
+
+[First Last](https://github.com/)
 
 ## links to the container images for each custom subsystem, hosted on DockerHub.
 
@@ -26,21 +36,21 @@ Navigate here for instructions on how to set up the key: https://api.data.gov/do
 
 
 
-## if there are any "secret" configuration files, such as .env or similar files, that are not included in the version control repository, examples of these files, such as env.example, with dummy data must be included in the repository and exact instructions for how to create the proper configuration files and what their contents should be must be supplied to the course admins by the due date.
+## Environment Variables
+
+You must create a `.env` file in the `/backend` folder before running the app.  
+Use `.env.example` as a guide:
 
 
 
-## Contributors:
-[Maya Felix](https://github.com/mxf4596)
+```bash
+cp backend/.env.example backend/.env 
+```
 
 
-[Arkadiuz Mercado](https://github.com/ArionM27)
 
 
-[Angel Serrano](https://github.com/a-ngels)
 
-
-[First Last](https://github.com/)
 
 
 
