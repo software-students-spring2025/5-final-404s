@@ -8,6 +8,7 @@ from werkzeug.security import generate_password_hash
 from werkzeug.security import check_password_hash
 from datetime import datetime, timezone
 import requests
+from recommend import recommend_meal
 
 # function to get nutrition facts from api 
 def get_nutrition_facts(food_name):
@@ -223,7 +224,10 @@ def create_app():
       """
       Route for viewing meal history
       """
-      pass
+      meals = list(db.meals.find({
+         "user_id": ObjectId(current_user.id)
+      }).sort("added_at", -1))
+      return render_template("meal_history.html", meals=meals)
 
    @app.route("/add-meal", methods=["GET", "POST"])
    @login_required
@@ -294,19 +298,10 @@ def create_app():
       if not meal:
          return redirect(url_for("home"))
 
-      return render_template("meal_summary.html", meal=meal)
+      recommendations = recommend_meal(meal["nutrition"])
 
-   @app.route("/meal-recommendations")
-   @login_required
-   def meal_recommendations():
-      """
-      Route for viewing recommended meals
-      """
-      return render_template("meal_recommendations.html")
+      return render_template("meal_summary.html", meal=meal, recommendations=recommendations)
 
-
-
-   
    return app
 
 

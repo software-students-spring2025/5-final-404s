@@ -136,17 +136,7 @@ def test_add_meal_post(mock_user):
     html = response.data.decode("utf-8")
     assert response.status_code == 200
     assert "Meal Summary" in html
-
-
-def test_meal_recommendations(mock_user):
-    """
-    Test meal recommendations page
-    """
-    response = mock_user.get("/meal-recommendations")
-    html = response.data.decode("utf-8")
-    assert response.status_code == 200
-    assert "Recommended Meals" in html
-
+    
 
 def test_logout(mock_user):
     """
