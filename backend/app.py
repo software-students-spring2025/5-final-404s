@@ -114,6 +114,7 @@ def create_app():
       if user_file:
          user = User()
          user.id = str(user_file["_id"])
+         user.username = user_file["username"]
          return user
       return None
    
