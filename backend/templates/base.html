@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>NutriTrack</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f9f8e8;
+            margin: 0;
+            padding: 0;
+        }
+        nav {
+            background-color: #ddd;
+            padding: 1rem;
+            display: flex;
+            gap: 1rem;
+        }
+        nav a {
+            text-decoration: none;
+            font-weight: bold;
+            color: black;
+        }
+        nav a:hover {
+            text-decoration: underline;
+        }
+        .container {
+            padding: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="{{ url_for('home') }}">🏠 Home</a>
+        <a href="{{ url_for('add_meal') }}">➕ Add Meal</a>
+        <a href="{{ url_for('meal_history') }}">📜 Meal History</a>
+        <a href="{{ url_for('logout') }}">🚪 Logout</a>
+    </nav>
+    <div class="container">
+        {% block content %}{% endblock %}
+    </div>
+</body>
+</html>
