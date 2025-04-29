@@ -1,1 +1,40 @@
-Add a meal
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meal Log</title>
+    <link rel="stylesheet" href="../static/style.css">
+</head>
+<body>
+    <div class="meal-log-container">
+        <h1>Meal Log</h1>
+        <div id="meal-log">
+            <div class="add-form">
+                <input type="text" id="meal1" name="meal1" placeholder="Enter meal...">
+                <button onclick="addMeal()">Add Meal</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let mealCount = 1;
+
+        function addMeal() {
+            mealCount++;
+            const mealLogDiv = document.getElementById('meal-log');
+            const newMealInput = document.createElement('div');
+            newMealInput.classList.add('add-form');
+            newMealInput.innerHTML = `
+                <input type="text" id="meal${mealCount}" name="meal${mealCount}" placeholder="Enter meal...">
+                <button onclick="removeMeal(this)">Delete</button>
+            `;
+            mealLogDiv.appendChild(newMealInput);
+        }
+
+        function removeMeal(button) {
+            button.parentElement.remove();
+        }
+    </script>
+</body>
+</html>
