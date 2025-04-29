@@ -8,11 +8,15 @@
 </head>
 <body>
     <div class="meal-log-container">
-        <h1>Meal Summary</h1>
+        <div style="display: inline-block;">
+            <h1>Meal Summary</h1>
+            <div class="back">
+                <a href="{{ url_for('home') }}"><- Back</a>
+            </div>
+        </div>
 
 
         <div class="meal-summary">
-            <h2>Meal Summary</h2>
             <p><strong>Meal Type:</strong> {{ meal['meal_type'] }}</p>
             <p><strong>Date:</strong> {{ meal['date'] }}</p>
             <p><strong>Food List:</strong> {{ meal['food_input'] }}</p>
