@@ -1,1 +1,41 @@
-Meal Summary
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meal Summary</title>
+    <link rel="stylesheet" href="../static/style.css">
+</head>
+<body>
+    <div class="meal-log-container">
+        <h1>Meal Summary</h1>
+
+
+        <div class="meal-summary">
+            <h2>Meal Summary</h2>
+            <p><strong>Meal Type:</strong> {{ meal['meal_type'] }}</p>
+            <p><strong>Date:</strong> {{ meal['date'] }}</p>
+            <p><strong>Food List:</strong> {{ meal['food_input'] }}</p>
+
+            <h3>Nutritional Info</h3>
+            <ul>
+                <li><strong>Calories:</strong> {{ meal['nutrition']['calories'] }} kcal</li>
+                <li><strong>Protein:</strong> {{ meal['nutrition']['protein'] }} g</li>
+                <li><strong>Carbohydrates:</strong> {{ meal['nutrition']['carbohydrates'] }} g</li>
+                <li><strong>Fiber:</strong> {{ meal['nutrition']['fiber'] }} g</li>
+                <li><strong>Calcium:</strong> {{ meal['nutrition']['calcium'] }} mg</li>
+            </ul>
+        </div>
+
+
+        <div class="meal-summary">
+            <h2>Food Recommendations</h2>
+            <ul>
+                {% for recommendation in recommendations %}
+                    <li>{{ recommendation }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
