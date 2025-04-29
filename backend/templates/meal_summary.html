@@ -11,11 +11,15 @@
 </head>
 <body>
     <div class="meal-log-container">
-        <h1>Meal Summary</h1>
+        <div style="display: inline-block;">
+            <h1>Meal Summary</h1>
+            <div class="back">
+                <a href="{{ url_for('home') }}"><- Back</a>
+            </div>
+        </div>
 
 
         <div class="meal-summary">
-            <h2>Meal Summary</h2>
             <p><strong>Meal Type:</strong> {{ meal['meal_type'] }}</p>
             <p><strong>Date:</strong> {{ meal['date'] }}</p>
             <p><strong>Food List:</strong> {{ meal['food_input'] }}</p>
@@ -34,10 +38,16 @@
         <div class="meal-summary">
             <h2>Food Recommendations</h2>
             <ul>
-                {% for recommendation in recommendations %}
-                    <li>{{ recommendation }}</li>
+                {% for nutrient, foods in recommendations.items() %}
+                    <ul>
+                    <p><strong>{{ nutrient.capitalize() }}</strong></p>
+                    {% for food in foods %}
+                    <li>{{ food.capitalize() }}</li>
+                    {% endfor %}
+                    </ul>
                 {% endfor %}
 
+                
             </ul>
         </div>
     </div>

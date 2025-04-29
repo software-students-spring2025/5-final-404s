@@ -1,4 +1,21 @@
 {% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meal Log</title>
+    <link rel="stylesheet" href="../static/style.css">
+</head>
+<body>
+    <div class="meal-log-container">
+
+        <div style="display: inline-block;">
+            <h1>Meal Log</h1>
+            <div class="back">
+                <a href="{{ url_for('home') }}"><- Back</a>
+            </div>
+        </div>
 
 {% block content %}
 <div class="meal-log-container">

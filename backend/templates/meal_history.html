@@ -14,10 +14,10 @@
 <body>
 
     <div style="display: inline-block;">
-    <h1>{{ current_user.username }}'s Meal History</h1>
-    <div class="back">
-        <a href="{{ url_for('home') }}"><- Back</a>
-    </div>
+        <h1>{{ current_user.username }}'s Meal History</h1>
+        <div class="back">
+            <a href="{{ url_for('home') }}"><- Back</a>
+        </div>
     </div>
 
     <br>
@@ -28,7 +28,7 @@
                 <li>
                     <strong>{{ meal.meal_type|capitalize }}</strong> on {{ meal.date }}<br>
                     Foods: {{ meal.food_input }}<br>
-                    <a href="{{ url_for('meal_summary', meal_id=meal._id) }}">View Nutrition Summary</a>
+                    <a href="{{ url_for('meal_summary', meal_id=meal._id) }}" class="light">View Nutrition Summary</a>
                 </li>
                 <br>
             {% endfor %}
