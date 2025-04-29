@@ -35,9 +35,15 @@
         <div class="meal-summary">
             <h2>Food Recommendations</h2>
             <ul>
-                {% for recommendation in recommendations %}
-                    <li>{{ recommendation }}</li>
+                {% for nutrient, foods in recommendations.items() %}
+                    <ul>
+                    <p><strong>{{ nutrient.capitalize() }}</strong></p>
+                    {% for food in foods %}
+                    <li>{{ food.capitalize() }}</li>
+                    {% endfor %}
+                    </ul>
                 {% endfor %}
+                
             </ul>
         </div>
     </div>
