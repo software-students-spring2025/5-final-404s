@@ -10,7 +10,16 @@
 </head>
 <body>
     <h1>NutriTrack</h1>
+    <div class="center-container">
+        <a href="{{ url_for('add_meal') }}">➕ Add New Meal</a>
+        <a href="{{ url_for('meal_history') }}">📜 View Full Meal History</a>
+        <a href="{{ url_for('logout') }}">🚪 Log Out</a>
+     </div>
+
     <h3>Welcome, {{ current_user.username }}!</h1>
+
+    <br>
+
     <h3>Your Recent Meals</h2>
 
     {% if meals %}
@@ -28,13 +37,5 @@
         <p>No meals logged yet.</p>
     {% endif %}
 
-    <br>
-    <hr>
-
-    <div class="center-container">
-        <a href="{{ url_for('add_meal') }}">➕ Add New Meal</a>
-        <a href="{{ url_for('meal_history') }}">📜 View Full Meal History</a>
-        <a href="{{ url_for('logout') }}">🚪 Log Out</a>
-     </div>
 </body>
 </html>
