@@ -83,7 +83,7 @@ def create_app():
    app = Flask(__name__)
  
    # set secret and auto reload templates
-   app.secret_key = os.urandom(24)
+   app.secret_key = os.getenv("SECRET_KEY", "supersecretkey12#4")
    app.config["TEMPLATES_AUTO_RELOAD"] = True
    
    # set up for flask login
