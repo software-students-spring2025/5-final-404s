@@ -1,4 +1,4 @@
-[![Python Tests](https://github.com/software-students-spring2025/5-final-404s/actions/workflows/ci.yml/badge.svg)](https://github.com/software-students-spring2025/5-final-404s/actions/workflows/ci.yml)
+[![Python Tests](https://github.com/software-students-spring2025/5-final-404s/actions/workflows/backend.yml/badge.svg?branch=main)](https://github.com/software-students-spring2025/5-final-404s/actions/workflows/backend.yml)
 
 # Team 404s
 
