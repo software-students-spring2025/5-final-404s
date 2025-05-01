@@ -10,6 +10,7 @@ A web application that helps users track their daily food intake and receive rec
 Users can enter what they have eaten and we can calculate food nutrition facts and see what nutrient they lack and recommend meals based on that. 
 For example if they have had no carbs yet maybe we recommend food options with carbs such as pasta, rice, bread etc.
 
+
 ## Contributors:
 [Maya Felix](https://github.com/mxf4596)
 
