@@ -20,7 +20,7 @@ For example if they have had no carbs yet maybe we recommend food options with c
 [Angel Serrano](https://github.com/a-ngels)
 
 
-[First Last](https://github.com/)
+[Dibuk Seid](https://github.com/dibukseid)
 
 ## links to the container images for each custom subsystem, hosted on DockerHub.
 https://nutritrack-appmd.ondigitalocean.app/
