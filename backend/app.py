@@ -308,5 +308,4 @@ def create_app():
 
 app = create_app()
 if __name__ == "__main__":
-   FLASK_PORT = os.getenv("FLASK_PORT", "8080")
-   app.run(debug=True, host="0.0.0.0", port=int(FLASK_PORT))
+   app.run(debug=True, host="0.0.0.0", port=8080)
